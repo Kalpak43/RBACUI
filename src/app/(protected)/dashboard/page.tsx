@@ -45,10 +45,12 @@ export default function UserStatsPage() {
   }, []);
 
   useEffect(() => {
-    toast({
-      title: "Failed to fetch user stats",
-      variant: "destructive",
-    });
+    if(error) {
+      toast({
+        title: "Failed to fetch user stats",
+        variant: "destructive",
+      });
+    }
   }, [error]);
 
   return (

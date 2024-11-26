@@ -1,26 +1,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  Bar,
+  BarChart,
+  Cell,
+  Label,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-} from "recharts";
-import {
+  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -44,6 +48,11 @@ const COLORS = [
 export function UserStatsCharts() {
   const [data, setData] = useState<UserStats | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    setKey(1);
+  }, []);
 
   useEffect(() => {
     fetch("/api/get-numbers")
@@ -89,7 +98,7 @@ export function UserStatsCharts() {
           <CardTitle>User Status Distribution</CardTitle>
           <CardDescription>Active vs Inactive Users</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex items-center justify-center">
           <ChartContainer
             config={{
               activeUsers: {
@@ -101,29 +110,30 @@ export function UserStatsCharts() {
                 color: "hsl(var(--chart-5))",
               },
             }}
-            className="h-[300px]"
+            className="h-[150px] md:h-[300px]"
           >
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={pieChartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  innerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {pieChartData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <ChartTooltip content={<ChartTooltipContent />} />
-              </PieChart>
-            </ResponsiveContainer>
+            <PieChart height={100}>
+              <Pie
+                key={key}
+                data={pieChartData}
+                cx="50%"
+                cy="50%"
+                startAngle={0}
+                endAngle={360}
+                innerRadius={40}
+                fill="#8884d8"
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {pieChartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip content={<ChartTooltipContent />} />
+            </PieChart>
           </ChartContainer>
         </CardContent>
       </Card>
@@ -148,10 +158,11 @@ export function UserStatsCharts() {
                 },
               ])
             )}
-            className="h-[300px]"
+            className="h-[150px] md:h-[300px]"
           >
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={barChartData} layout="vertical">
+                <ChartTooltip content={<ChartTooltipContent />} />
                 <YAxis
                   dataKey="role"
                   type="category"
@@ -160,8 +171,22 @@ export function UserStatsCharts() {
                   axisLine={false}
                 />
                 <XAxis type="number" />
-                <Bar dataKey="count" fill="hsl(var(--chart-3))" />
-                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar
+                  dataKey="count"
+                  fill="hsl(var(--chart-3))"
+                  isAnimationActive={true}
+                  animationBegin={0}
+                  animationDuration={800}
+                >
+                  {barChartData.map((entry, index) => {
+                    return (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    );
+                  })}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </ChartContainer>

@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { UserForm } from "@/components/UserForm";
 import { FilterModal } from "@/components/FilterModal";
+import { useAuth } from "@/hooks/AuthProvider";
 
 const initialUsers = [
   {
@@ -43,6 +44,7 @@ const initialUsers = [
 
 export default function UsersPage() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [users, setUsers] = useState<
     | {
         id: number;
@@ -173,29 +175,33 @@ export default function UsersPage() {
 
   return (
     <div className="container mx-auto py-10 p-8">
-      <div className="md:flex items-center justify-between">
-        <h1 className="text-2xl font-bold mb-4">User Management</h1>
-        <div className="mb-4 flex gap-4 mt-4">
+      <div className="md:flex items-center justify-between space-y-8 my-2">
+        <div className="flex gap-4">
+          <h1 className="text-2xl font-bold">User Management</h1>
           <FilterModal onFilter={handleFilter} />
-          <CSVUpload onFileUpload={handleCSVUpload} />
-          <Dialog open={isAddUserOpen} onOpenChange={setIsAddUserOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Add User
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add New User</DialogTitle>
-                <DialogDescription>
-                  Fill in the details to add a new user to the system.
-                </DialogDescription>
-              </DialogHeader>
-              <UserForm onUserAdd={handleUserUpdate} />
-            </DialogContent>
-          </Dialog>
         </div>
+        {user?.role === "admin" && (
+          <div className="flex gap-4">
+            <CSVUpload onFileUpload={handleCSVUpload} />
+            <Dialog open={isAddUserOpen} onOpenChange={setIsAddUserOpen}>
+              <DialogTrigger asChild>
+                <Button>
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Add User
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Add New User</DialogTitle>
+                  <DialogDescription>
+                    Fill in the details to add a new user to the system.
+                  </DialogDescription>
+                </DialogHeader>
+                <UserForm onUserAdd={handleUserUpdate} />
+              </DialogContent>
+            </Dialog>
+          </div>
+        )}
       </div>
       {filteredUsers ? (
         <UserTable users={filteredUsers} onUserUpdate={handleUserUpdate} />

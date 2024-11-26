@@ -34,21 +34,22 @@ export function Navbar({ userRole, userName, userAvatar }: NavbarProps) {
 
   const NavItems = () => (
     <>
-      {userRole === "admin" && (
-        <>
-          <Button asChild variant="ghost">
-            <Link
-              href="/dashboard"
-              className={`text-sm font-medium transition-colors max-md:justify-start ${
-                pathname === "/dashboard"
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-primary"
-              }`}
-            >
-              <Eye className="mr-2 h-4 w-4" />
-              Overview
-            </Link>
-          </Button>
+      <>
+        <Button asChild variant="ghost">
+          <Link
+            href="/dashboard"
+            className={`text-sm font-medium transition-colors max-md:justify-start ${
+              pathname === "/dashboard"
+                ? "text-primary"
+                : "text-muted-foreground hover:text-primary"
+            }`}
+          >
+            <Eye className="mr-2 h-4 w-4" />
+            Overview
+          </Link>
+        </Button>
+        {/* Users button visible to admin and editor */}
+        {(userRole === "admin" || userRole === "editor") && (
           <Button asChild variant="ghost">
             <Link
               href="/dashboard/users"
@@ -62,6 +63,8 @@ export function Navbar({ userRole, userName, userAvatar }: NavbarProps) {
               Users
             </Link>
           </Button>
+        )}
+        {userRole === "admin" && (
           <Button asChild variant="ghost">
             <Link
               href="/dashboard/permissions"
@@ -75,8 +78,8 @@ export function Navbar({ userRole, userName, userAvatar }: NavbarProps) {
               Permissions
             </Link>
           </Button>
-        </>
-      )}
+        )}
+      </>
     </>
   );
 

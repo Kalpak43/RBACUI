@@ -89,13 +89,6 @@ export default function PermissionEditor() {
     }));
   };
 
-  const addNewPermission = () => {
-    if (newPermission && !permissions.includes(newPermission)) {
-      setPermissions((prev) => [...prev, newPermission]);
-      setNewPermission("");
-    }
-  };
-
   const searchUser = () => {
     const user = users.find(
       (u) => u.id.toString() === searchTerm || u.email === searchTerm
@@ -201,23 +194,6 @@ export default function PermissionEditor() {
           )}
         </CardContent>
       </Card>
-{/* 
-      <Card>
-        <CardHeader>
-          <CardTitle>Add New Permission</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex space-x-2">
-            <Input
-              type="text"
-              placeholder="New permission"
-              value={newPermission}
-              onChange={(e) => setNewPermission(e.target.value)}
-            />
-            <Button onClick={addNewPermission}>Add</Button>
-          </div>
-        </CardContent>
-      </Card> */}
 
       <Card>
         <CardHeader>

@@ -35,6 +35,7 @@ interface UserTableProps {
 }
 
 export function UserTable({ users, onUserUpdate }: UserTableProps) {
+  console.log(users[0])
   const [editingId, setEditingId] = React.useState<number | null>(null);
   const [editedUser, setEditedUser] = React.useState<User | null>(null);
   const [showPassword, setShowPassword] = React.useState<{
@@ -95,11 +96,11 @@ export function UserTable({ users, onUserUpdate }: UserTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell className="font-medium">{user.id}</TableCell>
+          {users.map((u) => (
+            <TableRow key={u.id}>
+              <TableCell className="font-medium">{u.id}</TableCell>
               <TableCell>
-                {editingId === user.id ? (
+                {editingId === u.id ? (
                   <Input
                     value={editedUser?.username}
                     onChange={(e) =>
@@ -107,24 +108,24 @@ export function UserTable({ users, onUserUpdate }: UserTableProps) {
                     }
                   />
                 ) : (
-                  user.username
+                  u.username
                 )}
               </TableCell>
               <TableCell>
-                {editingId === user.id ? (
+                {editingId === u.id ? (
                   <Input
                     value={editedUser?.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
                   />
                 ) : (
-                  user.email
+                  u.email
                 )}
               </TableCell>
               <TableCell>
                 <div className="flex items-center space-x-2">
-                  {editingId === user.id ? (
+                  {editingId === u.id ? (
                     <Input
-                      type={showPassword[user.id] ? "text" : "password"}
+                      type={showPassword[u.id] ? "text" : "password"}
                       value={editedUser?.password}
                       onChange={(e) =>
                         handleInputChange("password", e.target.value)
@@ -132,20 +133,20 @@ export function UserTable({ users, onUserUpdate }: UserTableProps) {
                     />
                   ) : (
                     <span className="font-mono bg-muted px-2 py-1 rounded text-sm">
-                      {showPassword[user.id]
-                        ? user.password
-                        : user.password.replace(/./g, "•")}
+                      {showPassword[u.id]
+                        ? u.password || ""
+                        : (u.password || "").replace(/./g, "•")}
                     </span>
                   )}
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => togglePasswordVisibility(user.id)}
+                    onClick={() => togglePasswordVisibility(u.id)}
                     aria-label={
-                      showPassword[user.id] ? "Hide password" : "Show password"
+                      showPassword[u.id] ? "Hide password" : "Show password"
                     }
                   >
-                    {showPassword[user.id] ? (
+                    {showPassword[u.id] ? (
                       <EyeOff className="h-4 w-4" />
                     ) : (
                       <Eye className="h-4 w-4" />
@@ -154,7 +155,7 @@ export function UserTable({ users, onUserUpdate }: UserTableProps) {
                 </div>
               </TableCell>
               <TableCell>
-                {editingId === user.id ? (
+                {editingId === u.id ? (
                   <Select
                     value={editedUser?.role}
                     onValueChange={(value) => handleInputChange("role", value)}
@@ -170,14 +171,14 @@ export function UserTable({ users, onUserUpdate }: UserTableProps) {
                   </Select>
                 ) : (
                   <Badge
-                    variant={user.role === "admin" ? "default" : "secondary"}
+                    variant={u.role === "admin" ? "default" : "secondary"}
                   >
-                    {user.role}
+                    {u.role}
                   </Badge>
                 )}
               </TableCell>
               <TableCell>
-                {editingId === user.id ? (
+                {editingId === u.id ? (
                   <Select
                     value={editedUser?.status}
                     onValueChange={(value) =>
@@ -195,23 +196,23 @@ export function UserTable({ users, onUserUpdate }: UserTableProps) {
                 ) : (
                   <Badge
                     variant={
-                      user.status === "active" ? "active" : "destructive"
+                      u.status === "active" ? "active" : "destructive"
                     }
                   >
-                    {user.status}
+                    {u.status}
                   </Badge>
                 )}
               </TableCell>
               <TableCell>
-                {editingId === user.id ? (
+                {editingId === u.id ? (
                   <div className="flex space-x-2">
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={handleSave}
-                      disabled={loading[user.id]}
+                      disabled={loading[u.id]}
                     >
-                      {loading[user.id] ? (
+                      {loading[u.id] ? (
                         <Spinner className="mr-2" />
                       ) : (
                         <Save className="h-4 w-4 mr-2" />
@@ -222,7 +223,7 @@ export function UserTable({ users, onUserUpdate }: UserTableProps) {
                       variant="ghost"
                       size="sm"
                       onClick={handleCancel}
-                      disabled={loading[user.id]}
+                      disabled={loading[u.id]}
                     >
                       <X className="h-4 w-4 mr-2" />
                       Cancel
@@ -232,7 +233,7 @@ export function UserTable({ users, onUserUpdate }: UserTableProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleEditClick(user)}
+                    onClick={() => handleEditClick(u)}
                   >
                     <Edit2 className="h-4 w-4 mr-2" />
                   </Button>

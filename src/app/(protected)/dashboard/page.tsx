@@ -53,7 +53,7 @@ export default function UserStatsPage() {
 
   return (
     <div className="container mx-auto p-4 space-y-8">
-      <h1 className="text-2xl font-bold">User Statistics</h1>
+      <h1 className="text-2xl font-bold">Overview</h1>
       <div className="grid gap-4 md:grid-cols-2">
         {data ? (
           <>

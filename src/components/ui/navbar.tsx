@@ -124,7 +124,7 @@ export function Navbar({ userRole, userName, userAvatar }: NavbarProps) {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Button variant="ghost" onClick={logout}>
+                <Button variant="ghost" onClick={logout} className="w-full">
                   Log out
                 </Button>
               </DropdownMenuItem>

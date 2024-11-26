@@ -1,11 +1,23 @@
 "use client";
 
 import Login from "@/components/login";
-import React from "react";
+import { useAuth } from "@/hooks/AuthProvider";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 export default function page() {
+  const { user } = useAuth();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.replace("/dashboard");
+    }
+  }, [user, router]);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
+    <main className="flex min-h-screen flex-col items-center justify-center p-8">
       <Login />
     </main>
   );

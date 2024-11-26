@@ -46,9 +46,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const user = localStorage.getItem("user");
     if (user) {
       setUser(JSON.parse(user));
-      router.replace("/dashboard");
     }
   }, []);
+
+  
 
   const login = useCallback(
     async (email: string, password: string) => {

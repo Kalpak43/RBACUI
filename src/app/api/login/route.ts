@@ -14,8 +14,6 @@ export async function POST(request: Request) {
       throw new Error("User not found");
     }
 
-    delete user.password; 
-
     return NextResponse.json({
       success: true,
       user: {

@@ -1,7 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-// import { UserStatsCharts } from "@/components/UserStatsChart";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -11,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import dynamic from "next/dynamic";
+import { useToast } from "@/hooks/use-toast";
 
 const UserPieChart = dynamic(() =>
   import("@/components/UserStatsChart/UserPieChart").then((mod) => mod.default)
@@ -27,15 +27,8 @@ interface UserStats {
   totalUsers: number;
 }
 
-const COLORS = [
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
-];
-
 export default function UserStatsPage() {
+  const { toast } = useToast();
   const [data, setData] = useState<UserStats | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,6 +43,13 @@ export default function UserStatsPage() {
       .then(setData)
       .catch((err) => setError(err.message));
   }, []);
+
+  useEffect(() => {
+    toast({
+      title: "Failed to fetch user stats",
+      variant: "destructive",
+    });
+  }, [error]);
 
   return (
     <div className="container mx-auto p-4 space-y-8">

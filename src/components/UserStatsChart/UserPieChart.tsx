@@ -1,8 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import {
   Card,

@@ -1,7 +1,6 @@
 "use client";
 
-import { tcWrapper } from "@/lib/utils";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   createContext,
   useCallback,
@@ -25,7 +24,7 @@ const AuthContext = createContext<{
   logout: () => void;
 }>({
   user: null,
-  login: (username: string, password: string) => null,
+  login: () => null,
   logout: () => null,
 });
 
@@ -48,8 +47,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(JSON.parse(user));
     }
   }, []);
-
-  
 
   const login = useCallback(
     async (email: string, password: string) => {
@@ -75,12 +72,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         });
         localStorage.setItem("user", JSON.stringify(data.user));
         router.replace("/dashboard");
-      } catch (e: any) {
-        toast({
-          title: "Error",
-          description: e.message,
-          variant: "destructive",
-        });
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          toast({
+            title: "Error",
+            description: e.message,
+            variant: "destructive",
+          });
+        }
         return;
       }
     },

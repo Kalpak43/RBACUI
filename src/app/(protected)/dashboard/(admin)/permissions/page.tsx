@@ -42,7 +42,6 @@ export default function PermissionEditor() {
   const [userPermissions, setUserPermissions] = useState<
     Record<number, string[]>
   >({});
-  const [newPermission, setNewPermission] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);

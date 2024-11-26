@@ -18,30 +18,6 @@ import { UserForm } from "@/components/UserForm";
 import { FilterModal } from "@/components/FilterModal";
 import { useAuth } from "@/hooks/AuthProvider";
 
-const initialUsers = [
-  {
-    id: 1,
-    username: "admin",
-    email: "admin@email.com",
-    password: "admin123",
-    role: "admin",
-  },
-  {
-    id: 2,
-    username: "user1",
-    email: "user1@email.com",
-    password: "password123",
-    role: "user",
-  },
-  {
-    id: 3,
-    username: "moderator",
-    email: "moderator@email.com",
-    password: "mod456",
-    role: "moderator",
-  },
-];
-
 export default function UsersPage() {
   const { toast } = useToast();
   const { user } = useAuth();
@@ -155,9 +131,13 @@ export default function UsersPage() {
         title: "Success",
         description: "User data has been updated from the CSV file.",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error uploading CSV:", error);
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message || "An unknown error occurred");
+      } else {
+        setError("An unknown error occurred");
+      }
     }
   };
 

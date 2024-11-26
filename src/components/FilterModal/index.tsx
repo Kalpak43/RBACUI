@@ -54,7 +54,8 @@ export function FilterModal({ onFilter }: FilterModalProps) {
         <DialogHeader>
           <DialogTitle>Filter Users</DialogTitle>
           <DialogDescription>
-            Set the filters for role and status. Click apply when you're done.
+            Set the filters for role and status. Click apply when you&apos;re
+            done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

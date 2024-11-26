@@ -3,7 +3,7 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Navbar } from "@/components/ui/navbar";
 import { useAuth } from "@/hooks/AuthProvider";
-import React, { useEffect } from "react";
+import React from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();

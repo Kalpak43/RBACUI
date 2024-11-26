@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/AuthProvider";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-export default function page() {
+export default function LoginPage() {
   const { user } = useAuth();
 
   const router = useRouter();

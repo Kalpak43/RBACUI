@@ -17,6 +17,8 @@ import { PlusCircle } from "lucide-react";
 import { UserForm } from "@/components/UserForm";
 import { FilterModal } from "@/components/FilterModal";
 import { useAuth } from "@/hooks/AuthProvider";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function UsersPage() {
   const { toast } = useToast();
@@ -186,7 +188,11 @@ export default function UsersPage() {
       {filteredUsers ? (
         <UserTable users={filteredUsers} onUserUpdate={handleUserUpdate} />
       ) : (
-        <p>Loading...</p>
+        <Card>
+          <CardContent>
+            <Skeleton className="h-[500px] w-full" />
+          </CardContent>
+        </Card>
       )}
     </div>
   );

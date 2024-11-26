@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -31,62 +31,62 @@ interface NavbarProps {
 export function Navbar({ userRole, userName, userAvatar }: NavbarProps) {
   const { logout } = useAuth();
   const pathname = usePathname();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  const NavItems = () => (
+  const closeSheet = () => setIsSheetOpen(false);
+
+  const NavItems = ({ onItemClick }: { onItemClick?: () => void }) => (
     <>
-      <>
-        <Button asChild variant="ghost">
+      <Button asChild variant="ghost" onClick={onItemClick}>
+        <Link
+          href="/dashboard"
+          className={`text-sm font-medium transition-colors max-md:justify-start ${
+            pathname === "/dashboard"
+              ? "text-primary"
+              : "text-muted-foreground hover:text-primary"
+          }`}
+        >
+          <Eye className="mr-2 h-4 w-4" />
+          Overview
+        </Link>
+      </Button>
+      {(userRole === "admin" || userRole === "editor") && (
+        <Button asChild variant="ghost" onClick={onItemClick}>
           <Link
-            href="/dashboard"
+            href="/dashboard/users"
             className={`text-sm font-medium transition-colors max-md:justify-start ${
-              pathname === "/dashboard"
+              pathname === "/dashboard/users"
                 ? "text-primary"
                 : "text-muted-foreground hover:text-primary"
             }`}
           >
-            <Eye className="mr-2 h-4 w-4" />
-            Overview
+            <Users className="mr-2 h-4 w-4" />
+            Users
           </Link>
         </Button>
-        {/* Users button visible to admin and editor */}
-        {(userRole === "admin" || userRole === "editor") && (
-          <Button asChild variant="ghost">
-            <Link
-              href="/dashboard/users"
-              className={`text-sm font-medium transition-colors max-md:justify-start ${
-                pathname === "/dashboard/users"
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-primary"
-              }`}
-            >
-              <Users className="mr-2 h-4 w-4" />
-              Users
-            </Link>
-          </Button>
-        )}
-        {userRole === "admin" && (
-          <Button asChild variant="ghost">
-            <Link
-              href="/dashboard/permissions"
-              className={`text-sm font-medium transition-colors max-md:justify-start ${
-                pathname === "/dashboard/permissions"
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-primary"
-              }`}
-            >
-              <Shield className="mr-2 h-4 w-4" />
-              Permissions
-            </Link>
-          </Button>
-        )}
-      </>
+      )}
+      {userRole === "admin" && (
+        <Button asChild variant="ghost" onClick={onItemClick}>
+          <Link
+            href="/dashboard/permissions"
+            className={`text-sm font-medium transition-colors max-md:justify-start ${
+              pathname === "/dashboard/permissions"
+                ? "text-primary"
+                : "text-muted-foreground hover:text-primary"
+            }`}
+          >
+            <Shield className="mr-2 h-4 w-4" />
+            Permissions
+          </Link>
+        </Button>
+      )}
     </>
   );
 
   return (
     <header className="border-b">
       <div className="flex h-16 items-center px-4">
-        <Sheet>
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" className="md:hidden">
               <Menu className="h-5 w-5" />
@@ -96,7 +96,7 @@ export function Navbar({ userRole, userName, userAvatar }: NavbarProps) {
           <SheetContent side="left" className="w-[300px] sm:w-[400px]">
             <SheetTitle>RBACUI</SheetTitle>
             <nav className="flex flex-col space-y-4 py-10">
-              <NavItems />
+              <NavItems onItemClick={closeSheet} />
             </nav>
           </SheetContent>
         </Sheet>

@@ -95,6 +95,7 @@ export function FilterModal({ onFilter }: FilterModalProps) {
           <Button variant="outline" onClick={handleReset}>
             Reset
           </Button>
+          <br />
           <Button onClick={handleFilter}>Apply Filters</Button>
         </DialogFooter>
       </DialogContent>

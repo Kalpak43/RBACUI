@@ -157,13 +157,13 @@ export default function UsersPage() {
 
   return (
     <div className="container mx-auto py-10 p-8">
-      <div className="md:flex items-center justify-between space-y-8 my-2">
+      <div className="md:flex items-center justify-between space-y-10 my-2">
         <div className="flex gap-4">
           <h1 className="text-2xl font-bold">User Management</h1>
           <FilterModal onFilter={handleFilter} />
         </div>
         {user?.role === "admin" && (
-          <div className="flex gap-4">
+          <div className="flex max-md:justify-end gap-4">
             <CSVUpload onFileUpload={handleCSVUpload} />
             <Dialog open={isAddUserOpen} onOpenChange={setIsAddUserOpen}>
               <DialogTrigger asChild>
@@ -188,7 +188,7 @@ export default function UsersPage() {
       {filteredUsers ? (
         <UserTable users={filteredUsers} onUserUpdate={handleUserUpdate} />
       ) : (
-        <Card>
+        <Card className="pt-8">
           <CardContent>
             <Skeleton className="h-[500px] w-full" />
           </CardContent>

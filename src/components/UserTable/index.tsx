@@ -35,7 +35,6 @@ interface UserTableProps {
 }
 
 export function UserTable({ users, onUserUpdate }: UserTableProps) {
-  console.log(users[0])
   const [editingId, setEditingId] = React.useState<number | null>(null);
   const [editedUser, setEditedUser] = React.useState<User | null>(null);
   const [showPassword, setShowPassword] = React.useState<{
